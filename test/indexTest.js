@@ -1,28 +1,81 @@
-require ( './root.js' );
+require ( './helpers.js' );
 
+describe('index.js', function () {
+  describe('cats', function () {
+    it('is assigned an initial value of ["Milo", "Otis", "Garfield"]', function () {
+      expect(cats).to.have.ordered.members(["Milo", "Otis", "Garfield"]);
+    });
+  });
 
-describe('introduction(name)', function() {
-  it('takes in an argument of a name and returns a phrase with that name using string interpolation', function() {
-    expect(introduction("Aki")).toEqual("Hi, my name is Aki.");
-    expect(introduction("Samip")).toEqual("Hi, my name is Samip.");
-  })
-})
+  describe('Array functions', function () {
+    beforeEach(function () {
+      cats.length = 0;
 
-describe('introductionWithLanguage(name, language)', function() {
-  it('takes in two arguments, a name and a language, and returns a phrase using those arguments', function() {
-    expect(introductionWithLanguage("Aki", "Ember.js")).toEqual("Hi, my name is Aki and I am learning to program in Ember.js.");
-    expect(introductionWithLanguage("Samip", "React")).toEqual("Hi, my name is Samip and I am learning to program in React.");
-  })
-})
+      cats.push('Milo', 'Otis', 'Garfield');
+    });
 
-describe('introductionWithLanguageOptional(name, language)', function() {
-  it('takes in two arguments, a name and a language, and language defaults to JavaScript', function() {
-    expect(introductionWithLanguageOptional("Gracie")).toEqual("Hi, my name is Gracie and I am learning to program in JavaScript.");
-  })
-})
+    describe('destructivelyAppendCat(name)', function () {
+      it('appends a cat to the end of the cats array', function () {
+        destructivelyAppendCat('Ralph');
 
-describe('introductionWithLanguageOptional(name, language)', function() {
-  it('takes in two arguments, a name and a language, and the default value can be overridden with an argument', function() {
-    expect(introductionWithLanguageOptional("Gracie", "Python")).toEqual("Hi, my name is Gracie and I am learning to program in Python.");
-  })
-})
+        expect(cats).to.have.ordered.members(["Milo", "Otis", "Garfield", "Ralph"]);
+      });
+    });
+
+    describe('destructivelyPrependCat(name)', function () {
+      it('prepends a cat to the beginning of the cats array', function () {
+        destructivelyPrependCat("Bob");
+
+        expect(cats).to.have.ordered.members(["Bob", "Milo", "Otis", "Garfield"]);
+      });
+    });
+
+    describe('destructivelyRemoveLastCat()', function () {
+      it('removes the last cat from the cats array', function () {
+        destructivelyRemoveLastCat();
+
+        expect(cats).to.have.ordered.members(["Milo", "Otis"]).and.to.not.include('Garfield');
+      });
+    });
+
+    describe('destructivelyRemoveFirstCat()', function () {
+      it('removes the first cat from the cats array', function () {
+        destructivelyRemoveFirstCat();
+
+        expect(cats).to.have.ordered.members(["Otis", "Garfield"]).and.to.not.include('Milo');
+      });
+    });
+
+    describe('appendCat(name)', function () {
+      it('appends a cat to the cats array and returns a new array, leaving the cats array unchanged', function () {
+        expect(appendCat("Broom")).to.have.ordered.members(["Milo", "Otis", "Garfield", "Broom"]);
+
+        expect(cats).to.have.ordered.members(["Milo", "Otis", "Garfield"]);
+      });
+    });
+
+    describe('prependCat(name)', function () {
+      it('prepends a cat to the cats array and returns a new array, leaving the cats array unchanged', function () {
+        expect(prependCat("Arnold")).to.have.ordered.members(["Arnold", "Milo", "Otis", "Garfield"]);
+
+        expect(cats).to.have.ordered.members(["Milo", "Otis", "Garfield"]);
+      });
+    });
+
+    describe('removeLastCat()', function () {
+      it('removes the last cat in the cats array and returns a new array, leaving the cats array unchanged', function () {
+        expect(removeLastCat()).to.have.ordered.members(["Milo", "Otis"]);
+
+        expect(cats).to.have.ordered.members(["Milo", "Otis", "Garfield"]);
+      });
+    });
+
+    describe('removeFirstCat()', function () {
+      it('removes the first cat from the cats array and returns a new array, leaving the cats array unchanged', function () {
+        expect(removeFirstCat()).to.have.ordered.members(["Otis", "Garfield"]);
+
+        expect(cats).to.have.ordered.members(["Milo", "Otis", "Garfield"]);
+      });
+    });
+  });
+});
